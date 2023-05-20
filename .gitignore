@@ -181,6 +181,8 @@ fabric.properties
 .idea/**/azureSettings.xml
 
 ### VisualStudioCode ###
+**/.vscode/
+.vscode/
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
