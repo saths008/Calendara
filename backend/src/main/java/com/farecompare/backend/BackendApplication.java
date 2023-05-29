@@ -16,9 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @SpringBootApplication
 public class BackendApplication {
-	
+	@CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/")
 	public Map<String, String> home() {
+		System.out.println("Hello reached");
 		Map<String, String> payload = new HashMap<>();
 		payload.put("message", "welcome to the home page");
 		return payload;

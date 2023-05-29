@@ -1,5 +1,7 @@
 package com.farecompare.backend.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +21,7 @@ public class FileUploadController {
     private FileUploadService fileUploadService;
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/upload/local")
-    public void uploadLocal(@RequestParam("file") MultipartFile file) {
-        fileUploadService.uploadToLocal(file);
+    public Map<String, String> uploadLocal(@RequestParam("file") MultipartFile file) {
+        return fileUploadService.uploadToLocal(file);
     }
 }
