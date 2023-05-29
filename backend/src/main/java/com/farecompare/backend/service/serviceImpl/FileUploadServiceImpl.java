@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +17,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     
     private String uploadFolderPath = "/home/saath/Dev/fareCompare/backend/src/test/resources/";
     @Override
-    public void uploadToLocal(MultipartFile file){
+    public Map<String, String> uploadToLocal(MultipartFile file){
         
         try{
             byte[] data = file.getBytes();
@@ -28,9 +30,15 @@ public class FileUploadServiceImpl implements FileUploadService {
             System.out.println("ln26");
             Files.write(path, data);
             System.out.println("ln28");
+            Map<String, String> payload = new HashMap<>();
+            payload.put("message", calendarData);
+		    return payload;
         }
         catch(IOException e){
             e.printStackTrace();
+            Map<String, String> payload = new HashMap<>();
+            payload.put("message", "Something went wrong!");
+            return payload;
         }
     }
 }
