@@ -27,14 +27,20 @@ public class FileUploadServiceImpl implements FileUploadService {
             String calendarData= new String(data);
             System.out.println("Successful Upload");
             CalendarParser calendarParser = new CalendarParser(calendarData);
-            System.out.println(calendarParser.sayHello());
-            List<String> allEvents = calendarParser.getEvents(calendarData);
-            System.out.println("allEvents: "+ allEvents);
-            System.out.println("Number of Events: " +  calendarParser.getNumberOfEvents());
+//            System.out.println(calendarParser.sayHello());
+//            List<String> listOfCalendarData = calendarParser.getListOfCalendarData();
+//            System.out.println("allEvents: " + listOfCalendarData);
+//            System.out.println("Number of Events: " +  calendarParser.getNumberOfEvents());
+//            calendarParser.getTimeFromISO("20230610T090000Z");
+//
+//            String dtStartTag = calendarParser.getDStart(listOfCalendarData.get(0));
+//            System.out.println("spliceDTstart:" + calendarParser.spliceDTSTART(dtStartTag) );
+
+            calendarParser.getDayAndTimeForAllEvents();
             payload.put("message", calendarData);
 		    return payload;
         }
-        catch(IOException e){
+        catch(Exception e){
             e.printStackTrace();
             payload.put("message", "Something went wrong!");
             return payload;
