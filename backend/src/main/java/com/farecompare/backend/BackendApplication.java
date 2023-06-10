@@ -25,6 +25,8 @@ public class BackendApplication {
 		return payload;
 	}
 
+
+
 	// @CrossOrigin(origins = "http://localhost:3000")
 	// @PostMapping("/analyse")
 	// public ResponseEntity<String> handleFileUpload(@RequestBody MultipartFile file) {

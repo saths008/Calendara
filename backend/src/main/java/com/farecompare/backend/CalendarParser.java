@@ -1,41 +1,48 @@
 package com.farecompare.backend;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+/*@Component
+@ComponentScan*/
 public class CalendarParser {
-    private final String pathToCalendar;
+    private String calendarData;
+    private List<String> listOfCalendarData;
     private static final String EVENT_BEGIN = "BEGIN:VEVENT";
     private static final String EVENT_END = "END:VEVENT";
 
-    public CalendarParser(String pathToCalendar) {
-        this.pathToCalendar = pathToCalendar;
+    public CalendarParser(String calendarData) {
+        this.calendarData = calendarData;
+         listOfCalendarData = getEvents(calendarData);
     }
 
-    public String getPathToCalendar() {
-        return pathToCalendar;
-    }
+//    public String getPathToCalendar() {
+//        return pathToCalendar;
+//    }
 
-    public String readFile() {
-        try{
-            File file = new File(this.pathToCalendar);
-            Scanner sc = new Scanner(file);
-            String fileContents = "";
-            while(sc.hasNextLine()) {
-                fileContents += sc.nextLine();
-            }
-            sc.close();
-            // System.out.println(fileContents);
-            return fileContents;
-        }
-        catch(FileNotFoundException e) {
-            System.out.println(e);
-            return null;
-        }
-    }
+//    public String readFile() {
+//        try{
+//            File file = new File(this.pathToCalendar);
+//            Scanner sc = new Scanner(file);
+//            String fileContents = "";
+//            while(sc.hasNextLine()) {
+//                fileContents += sc.nextLine();
+//            }
+//            sc.close();
+//            // System.out.println(fileContents);
+//            return fileContents;
+//        }
+//        catch(FileNotFoundException e) {
+//            System.out.println(e);
+//            return null;
+//        }
+//    }
     /**
      * Finds the indices of the first EVENT_BEGIN and EVENT_END in a given String
      * @param fileContents the String to search
@@ -58,8 +65,8 @@ public class CalendarParser {
  * Returns a List of Strings containing all VEvents in the calendar
  * @return a List of Strings containing all VEvents in the calendar
  */
-    public List<String> getEvents() {
-        String fileContents = this.readFile();
+    public List<String> getEvents(String calendarData) {
+        String fileContents = calendarData;
         List<String> events = new ArrayList<>();
         while(fileContents.contains(EVENT_BEGIN) && fileContents.contains(EVENT_END)) {
             List<Integer> indices = this.findRangeOfIndices(fileContents);
@@ -70,6 +77,13 @@ public class CalendarParser {
             fileContents = fileContents.substring(endIndex);
         }
         return events;
-       
+    }
+
+    public int getNumberOfEvents() {
+        return listOfCalendarData.size();
+    }
+
+    public String sayHello() {
+        return "Hello, this is the Calendar Parser Class";
     }
 }
