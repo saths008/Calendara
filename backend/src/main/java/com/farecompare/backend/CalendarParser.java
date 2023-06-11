@@ -1,5 +1,5 @@
 package com.farecompare.backend;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
@@ -8,9 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,8 +75,38 @@ public class CalendarParser {
 
     /**
      *
+     * @param calendarData input calendar data string
+     * @return string containing the location of the event
+     */
+    public String getLocation(String calendarData) {
+//        System.out.println("In getLocation of CalendarParser, input param: " + calendarData);
+        String regexUppercaseLocation = "LOCATION:[A-Za-z0-9\\s]+";
+        Pattern patternUpperCase = Pattern.compile(regexUppercaseLocation);
+        Matcher matcherUpperCase = patternUpperCase.matcher(calendarData);
+
+        String regexLowercaseLocation = "Location: [A-Za-z0-9\\s]+";
+        Pattern patternLowerCase = Pattern.compile(regexLowercaseLocation);
+        Matcher matcherLowerCase = patternLowerCase.matcher(calendarData);
+
+
+        if (matcherUpperCase.find()) {
+            String match = matcherUpperCase.group();
+            return match;
+        }
+         else if (matcherLowerCase.find()) {
+            String match = matcherLowerCase.group();
+            return match;
+        }
+        else{
+            return "No Location found";
+        }
+    }
+
+
+    /**
+     *
      * @param calendarData some calendar Data
-     * @return  the DTSTART tag of the calendarData
+     * @return  the DTSTART tag of the calendarData followed by an ISO timestamp
      */
     public String getDStart(String calendarData) {
         String regex = "DTSTART:\\d{8}T\\d{6}Z";
@@ -147,14 +175,36 @@ public class CalendarParser {
             throw new IllegalArgumentException("zuluTime not in ISO format");
         }
     }
-    public void getDayAndTimeForAllEvents() {
+
+    /**
+     * Print out the location, time and day of the week for every event.
+     * @return a HashMap where the key is an event identifier and the value represents the details of the event
+     */
+    public HashMap<String, String> getDetailsForAllEvents() {
         int counter = 0;
+        HashMap<String, String> detailsAndEventsMap = new HashMap<>();
         for (String event: listOfCalendarData) {
             counter++;
             String dStartTag = getDStart(event);
             String timeStamp = spliceDTSTART(dStartTag);
-            System.out.println("Event " + counter + ":" + getDayOfMonthFromISO(timeStamp) + " " +  getTimeFromISO(timeStamp));
-            System.out.println();
+            detailsAndEventsMap.put("Event " + counter, getDayOfMonthFromISO(timeStamp) + "& " +  getTimeFromISO(timeStamp) + "& " +  getLocation(event));
+//            System.out.println("Event " + counter + ":" + getDayOfMonthFromISO(timeStamp) + " " +  getTimeFromISO(timeStamp) + getLocation(event));
+//            System.out.println();
+
         }
+        return detailsAndEventsMap;
+    }
+
+    /**
+     * @param eventDetails HashMap where the key is an event identifier and the value represents the details of the event
+     * @return a Set of event details
+     */
+    public Set<String> getUniqueEventDetails(HashMap<String, String> eventDetails) {
+        Set<String> uniqueEventDetails = new HashSet<>();
+        for (String key: eventDetails.keySet()) {
+            uniqueEventDetails.add(eventDetails.get(key));
+        }
+        return uniqueEventDetails;
     }
 }
+

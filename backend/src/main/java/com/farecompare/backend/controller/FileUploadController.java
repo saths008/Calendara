@@ -21,7 +21,7 @@ public class FileUploadController {
     private FileUploadService fileUploadService;
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/upload/local")
-    public Map<String, String> uploadLocal(@RequestParam("file") MultipartFile file) {
+    public Map<String, Object> uploadLocal(@RequestParam("file") MultipartFile file) {
         return fileUploadService.uploadToLocal(file);
     }
 }

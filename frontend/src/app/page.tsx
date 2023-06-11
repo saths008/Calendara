@@ -7,8 +7,10 @@ import { FileUpload } from 'primereact/fileupload';
                  
 export default  function Home() {
   const [welcome, setWelcome] = useState("default welcome")
-  const [response, setResponse] = useState("default response")
+  // @ts-ignore
+  const [response, setResponse] = useState<Array<String>>(null);
   const [incorrectFileType, setincorrectFileType] = useState<String|null>(null)
+  const [formAppear, setFormAppear] = useState(false);
   const welcomeMessage = async (event: any) => {
     try {
       const responseAPI = await fetch('http://localhost:8080/', {
@@ -43,11 +45,13 @@ export default  function Home() {
       method: 'POST',
       body: formData
     })
+
     const jsonResponse = await responseMessage.json();
     console.log(`ln33: ${jsonResponse}`);
     console.log(`ln34: ${JSON.stringify(jsonResponse)}`);
-    setResponse(JSON.stringify(jsonResponse));
+    setResponse(jsonResponse.eventDetails);
     console.log(`response after setting: ${response}`);
+    setFormAppear(responseMessage.ok);
   };
   return (
     <>
@@ -62,13 +66,26 @@ export default  function Home() {
     uploadHandler={handleFileUpload}
     onSelect={handleBeforeUpload}
     />
-    {(
+      {(
           <div>
             <h3>welcome:</h3>
             <p>{welcome}</p>
           </div>
         )}
-        <h1>hello</h1>
+      <h1>hello</h1>
+
+      <div>
+        {formAppear &&
+            response.map((element, index) => (
+                <div key={index}>
+                  <label htmlFor={`input-${index}`}>{element}</label>
+                  <input id={`input-${index}`} type="text" />
+                </div>
+            ))}
+      </div>
+
+
+
     </>
   )
 }
