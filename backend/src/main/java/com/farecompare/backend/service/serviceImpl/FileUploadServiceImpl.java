@@ -24,21 +24,25 @@ public class FileUploadServiceImpl implements FileUploadService {
         try{
             byte[] data = file.getBytes();
             String calendarData= new String(data);
-            System.out.println("Successful Upload");
-            System.out.println("calendarData: " + calendarData );
+//            System.out.println("Successful Upload");
+//            System.out.println("calendarData: " + calendarData );
             calendarData = calendarData.replace("\n", "\\n");
             CalendarParser calendarParser = new CalendarParser(calendarData);
 //            System.out.println(calendarParser.sayHello());
             List<String> listOfCalendarData = calendarParser.getListOfCalendarData();
-            System.out.println("allEvents: " + listOfCalendarData);
+//            System.out.println("allEvents: " + listOfCalendarData);
 //            System.out.println("Number of Events: " +  calendarParser.getNumberOfEvents());
 //            calendarParser.getTimeFromISO("20230610T090000Z");
 //
 //            String dtStartTag = calendarParser.getDStart(listOfCalendarData.get(0));
 //            System.out.println("spliceDTstart:" + calendarParser.spliceDTSTART(dtStartTag) );
 
-            System.out.println(calendarParser.getLocation(listOfCalendarData.get(1)));
-             Set<String> uniqueEventDetails = calendarParser.getUniqueEventDetails(calendarParser.getDetailsForAllEvents());
+//            System.out.println(calendarParser.getLocation(listOfCalendarData.get(1)));
+//             Set<String> uniqueEventDetails = calendarParser.getUniqueEventDetails(calendarParser.getDetailsForAllEvents());
+            HashMap<String, String> lessAccurateGetDetailsForAllEvents = calendarParser.lessAccurateGetDetailsForAllEvents();
+            HashMap<String, String> allEventDetails = calendarParser.getDetailsForAllEvents();
+            HashMap<String, Integer> uniqueEventDetails = calendarParser.getFreqOfEventDetails( calendarParser.getUniqueEventDetails(lessAccurateGetDetailsForAllEvents), lessAccurateGetDetailsForAllEvents.values());
+//            System.out.println("freq. of event details: " + calendarParser.getFreqOfEventDetails());
             payload.put("message", "hello world");
             payload.put("eventDetails", uniqueEventDetails);
 

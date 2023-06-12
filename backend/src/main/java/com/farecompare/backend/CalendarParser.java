@@ -125,7 +125,7 @@ public class CalendarParser {
      * @return string just containing the time, DTSTART should be spliced off the original string
      */
     public String spliceDTSTART(String input) {
-        System.out.println("splice DTStart (" + input + "): " + input.substring(8, input.length()));
+//        System.out.println("splice DTStart (" + input + "): " + input.substring(8, input.length()));
         return input.substring(8, input.length());
     }
 
@@ -196,6 +196,26 @@ public class CalendarParser {
     }
 
     /**
+     * Print out the location, time and day of the week for every event.
+     * @return a HashMap where the key is an event identifier and the value represents the details of the event
+     */
+    public HashMap<String, String> lessAccurateGetDetailsForAllEvents() {
+        int counter = 0;
+        HashMap<String, String> detailsAndEventsMap = new HashMap<>();
+        for (String event: listOfCalendarData) {
+            counter++;
+            String dStartTag = getDStart(event);
+            String timeStamp = spliceDTSTART(dStartTag);
+            detailsAndEventsMap.put("Event " + counter, getDayOfMonthFromISO(timeStamp));
+//            System.out.println("Event " + counter + ":" + getDayOfMonthFromISO(timeStamp) + " " +  getTimeFromISO(timeStamp) + getLocation(event));
+//            System.out.println();
+
+        }
+        return detailsAndEventsMap;
+    }
+
+
+    /**
      * @param eventDetails HashMap where the key is an event identifier and the value represents the details of the event
      * @return a Set of event details
      */
@@ -206,5 +226,41 @@ public class CalendarParser {
         }
         return uniqueEventDetails;
     }
+
+    /**
+     * @param allEventDetails  a Collection of details of all events in the calendar
+     * @param uniqueEventDetails a Set of unique event details in the calendar
+     * @return HashMap where the key is the event detail and the value is the frequency of that key in the calendar.
+     */
+    public HashMap<String, Integer> getFreqOfEventDetails(Set<String> uniqueEventDetails, Collection<String> allEventDetails ) {
+        HashMap<String, Integer> frequencyOfEventDetails = new HashMap<>();
+//        Set<String> uniqueEventDetails = getUniqueEventDetails(getDetailsForAllEvents());
+
+        for(String uniqueEventDetail: uniqueEventDetails){
+            frequencyOfEventDetails.put(uniqueEventDetail, 0);
+        }
+
+        for(String eventDetail: allEventDetails){
+            for(String uniqueEventDetail: frequencyOfEventDetails.keySet()) {
+                if (eventDetail.equals(uniqueEventDetail)) {
+                    frequencyOfEventDetails.put(eventDetail,frequencyOfEventDetails.get(eventDetail) + 1);
+                }
+            }
+        }
+        System.out.println(frequencyOfEventDetails.keySet());
+        System.out.println(frequencyOfEventDetails);
+        return frequencyOfEventDetails;
+    }
+
+    /**
+     *
+     * @return A hashmap where the key is a Day and the value is the number of events on a specified day
+     */
+    public HashMap<String, Integer> getTotalFreqOfEventsOnDaysOfTheWeek() {
+        HashMap<String, String> lessAccurateGetDetailsForAllEvents = lessAccurateGetDetailsForAllEvents();
+        HashMap<String, Integer> uniqueEventDetails = getFreqOfEventDetails( getUniqueEventDetails(lessAccurateGetDetailsForAllEvents), lessAccurateGetDetailsForAllEvents.values());
+        return uniqueEventDetails;
+    }
+
 }
 
