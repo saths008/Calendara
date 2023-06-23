@@ -1,5 +1,5 @@
 "use client"
-import { GetServerSideProps } from "next";
+// import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
 import "primereact/resources/themes/lara-light-indigo/theme.css"; 
 import "primereact/resources/primereact.min.css"; 
@@ -121,7 +121,7 @@ export default  function Home() {
                 </div>
             ))}
 
-            {fare && <p>{fare}</p>}
+            {fare && <p>Total Fare: {fare}</p>}
              <button type="submit">Submit</button>
           </form>
       </div>
