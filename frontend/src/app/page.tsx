@@ -1,31 +1,22 @@
+// @ts-nocheck 
 "use client"
-// import { GetServerSideProps } from "next";
-import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { useEffect, useRef, useState } from "react";
 import "primereact/resources/themes/lara-light-indigo/theme.css"; 
 import "primereact/resources/primereact.min.css"; 
 import { FileUpload } from 'primereact/fileupload';
+import FareForm from "@/components/fareForm";
+import { log } from "console";
+import { Loader } from "lucide-react";
                  
 
 export default  function Home() {
-  const [welcome, setWelcome] = useState("default welcome")
   const [fileData, setFileData] = useState("default file data");
   // @ts-ignore
   const [response, setResponse] = useState<Array<String>>(null);
-  const [fare, setFare] = useState(null);
   const [incorrectFileType, setincorrectFileType] = useState<String|null>(null)
   const [formAppear, setFormAppear] = useState(false);
-  const welcomeMessage = async (event: any) => {
-    try {
-      const responseAPI = await fetch('http://localhost:8080/', {
-        method: 'GET',
-      });
-      const jsonData = await responseAPI.json();
-      const welcome = jsonData.message;
-      setWelcome(welcome);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+  const [fileUploadSuccess, setFileUploadSuccess] = useState<boolean>(false);
   const handleBeforeUpload = (event: any) => {
     console.log('here')
     const file = event.files[0];
@@ -39,95 +30,53 @@ export default  function Home() {
       return;
     }
   };
+
   const handleFileUpload = async (event: any) => {
     const formData = new FormData();
     const file = event.files[0];
     formData.append('file', file);
 
-    const responseMessage = await fetch('http://localhost:8080/api/v1/upload/local', {
-      method: 'POST',
-      body: formData
-    })
+    toast('Uploading file.....', {
+      icon: <Loader />,
+    });
+      const responseMessage = await fetch('http://localhost:8080/api/v1/upload/local', {
+        method: 'POST',
+        body: formData
+      })
+      
 
     const jsonResponse = await responseMessage.json();
-    console.log(`ln33: ${JSON.stringify(jsonResponse)}`);
-    console.log(`ln34: ${JSON.stringify(jsonResponse.eventDetails)}`);
+    if (responseMessage.ok) {
+      toast.success('File uploaded successfully');
+    }
+    else{
+      toast.error('File upload failed');
+    }
     setResponse(jsonResponse.eventDetails);
     setFileData(jsonResponse.fileData);
     console.log(`response after setting: ${response}`);
     setFormAppear(responseMessage.ok);
+    setFileUploadSuccess(responseMessage.ok);
   };
-
-
-  async function handleSubmit(event: any) {
-    event.preventDefault();
-  
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(Array.from(formData));
-    data.fileData = fileData;
-    console.log(`data: ${JSON.stringify(data)}`);
-    try {
-      const response = await fetch('http://localhost:8080/api/v1/submitForm', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data), // Convert FormData entries to JSON object
-      });
-      
-      if (response.ok) {
-        // Form submission successful
-        const jsonResponse = await response.json();
-        setFare(jsonResponse.fare);
-        console.log('Form submitted successfully');
-      } else {
-        // Form submission failed
-        console.error('Form submission failed');
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
-  }
-  
   return (
     <>
-    <FileUpload 
-    name="file" 
-    customUpload = {true}
-    multiple
-    accept=".ics"
-    maxFileSize={1000000} 
-    emptyTemplate={<p className="m-0">Drag and drop files to here to upload.</p>} 
-    onUpload={welcomeMessage}
-    uploadHandler={handleFileUpload}
-    onSelect={handleBeforeUpload}
-    />
-      {(
-          <div>
-            <h3>welcome:</h3>
-            <p>{welcome}</p>
-          </div>
-        )}
-      <h1>hello</h1>
-
+            {/* {fileUploadSuccess && (
+                      toast.success('Event has been created')
+            )} */}
+            <FileUpload 
+              mode = "basic"
+              name="file" 
+              customUpload = {true}
+              accept=".ics"
+              disabled={formAppear}
+              maxFileSize={1000000} 
+              uploadHandler={handleFileUpload}
+              onSelect={handleBeforeUpload}
+              />
+  
       <div>
-        <p>How much does each journey cost?</p>
-      <form onSubmit={handleSubmit}>
-      {formAppear &&
-            response.map((element, index) => (
-                <div key={index}>
-                  <label htmlFor={`input-${index}`}>{element}</label>
-                  <input name= {element.toString()} id={`input-${index}`} type="text" />
-                </div>
-            ))}
-
-            {fare && <p>Total Fare: {fare}</p>}
-             <button type="submit">Submit</button>
-          </form>
+        {formAppear && (<FareForm response={response} fileData={fileData}/>)}
       </div>
-
-
-
     </>
   )
 }
