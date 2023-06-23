@@ -60,9 +60,6 @@ export default  function Home() {
   };
   return (
     <>
-            {/* {fileUploadSuccess && (
-                      toast.success('Event has been created')
-            )} */}
             <FileUpload 
               mode = "basic"
               name="file" 

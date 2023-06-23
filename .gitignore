@@ -119,11 +119,11 @@ cmake-build-*/
 
 # File-based project format
 *.iws
-
 # IntelliJ
 out/
 
 # mpeltonen/sbt-idea plugin
+.idea/
 .idea_modules/
 
 # JIRA plugin
