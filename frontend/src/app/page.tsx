@@ -11,6 +11,7 @@ export default  function Home() {
   const [fileData, setFileData] = useState("default file data");
   // @ts-ignore
   const [response, setResponse] = useState<Array<String>>(null);
+  const [fare, setFare] = useState(null);
   const [incorrectFileType, setincorrectFileType] = useState<String|null>(null)
   const [formAppear, setFormAppear] = useState(false);
   const welcomeMessage = async (event: any) => {
@@ -73,9 +74,11 @@ export default  function Home() {
         },
         body: JSON.stringify(data), // Convert FormData entries to JSON object
       });
-  
+      
       if (response.ok) {
         // Form submission successful
+        const jsonResponse = await response.json();
+        setFare(jsonResponse.fare);
         console.log('Form submitted successfully');
       } else {
         // Form submission failed
@@ -117,6 +120,8 @@ export default  function Home() {
                   <input name= {element.toString()} id={`input-${index}`} type="text" />
                 </div>
             ))}
+
+            {fare && <p>{fare}</p>}
              <button type="submit">Submit</button>
           </form>
       </div>
