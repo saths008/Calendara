@@ -24,7 +24,6 @@ public class CalendarParser {
         this.calendarData = calendarData;
          listOfCalendarData = getEvents(calendarData);
     }
-
     /**
      * Finds the indices of the first EVENT_BEGIN and EVENT_END in a given String
      * @param fileContents the String to search
@@ -42,6 +41,9 @@ public class CalendarParser {
         else{
            return null;
         }
+    }
+    public String getCalendarData() {
+        return calendarData;
     }
 /**
  * Returns a List of Strings containing all VEvents in the calendar
@@ -187,7 +189,7 @@ public class CalendarParser {
             counter++;
             String dStartTag = getDStart(event);
             String timeStamp = spliceDTSTART(dStartTag);
-            detailsAndEventsMap.put("Event " + counter, getDayOfMonthFromISO(timeStamp) + "& " +  getTimeFromISO(timeStamp) + "& " +  getLocation(event));
+            detailsAndEventsMap.put("Event " + counter, getDayOfMonthFromISO(timeStamp) + " & " +  getTimeFromISO(timeStamp) + " & " +  getLocation(event));
 //            System.out.println("Event " + counter + ":" + getDayOfMonthFromISO(timeStamp) + " " +  getTimeFromISO(timeStamp) + getLocation(event));
 //            System.out.println();
 
@@ -213,8 +215,6 @@ public class CalendarParser {
         }
         return detailsAndEventsMap;
     }
-
-
     /**
      * @param eventDetails HashMap where the key is an event identifier and the value represents the details of the event
      * @return a Set of event details
@@ -250,6 +250,17 @@ public class CalendarParser {
         System.out.println(frequencyOfEventDetails.keySet());
         System.out.println(frequencyOfEventDetails);
         return frequencyOfEventDetails;
+    }
+
+
+    /**
+     *
+     * @return A hashmap containing the frequency of each unique event in the calendar
+     */
+    public HashMap<String, Integer> getFreqOfUniqueEvents() {
+        HashMap<String, String> allEventDetails = getDetailsForAllEvents();
+        HashMap<String, Integer> freqOfEventDetails = getFreqOfEventDetails( getUniqueEventDetails(allEventDetails), allEventDetails.values());
+        return freqOfEventDetails;
     }
 
     /**
