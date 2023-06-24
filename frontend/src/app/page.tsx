@@ -38,7 +38,6 @@ export default  function Home() {
     toast('Uploading file.....', {
       icon: <Loader />,
     });
-      console.log(`SERVER_DOMAIN: ${nextConfig.publicRuntimeConfig.NEXT_PUBLIC_SERVER_DOMAIN}`);
       const responseMessage = await fetch( `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/api/v1/upload/local`, {
         method: 'POST',
         body: formData
