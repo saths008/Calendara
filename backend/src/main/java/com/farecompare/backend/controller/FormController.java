@@ -4,6 +4,7 @@ import com.farecompare.backend.CalendarParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -13,7 +14,7 @@ import java.util.Set;
 @RequestMapping("/api/v1")
 public class FormController {
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "*")
     @PostMapping("/submitForm")
     public HashMap<String, Object> submitForm(@RequestBody Map<String, String> requestBody) {
         HashMap<String, Object> response = new HashMap<>();
@@ -29,17 +30,17 @@ public class FormController {
         return response;
     }
 
-    public int calculateFare(CalendarParser calendarParser, Map<String, String> requestBody) {
+    public BigDecimal calculateFare(CalendarParser calendarParser, Map<String, String> requestBody) {
         HashMap<String, Integer> freqOfFormLabels = calendarParser.getFrequencyOfFormLabels();
         Set<String> uniqueEvents = requestBody.keySet();
-        int totalFare = 0;
+        BigDecimal totalFare = BigDecimal.ZERO;
         System.out.println("ln36");
         for (String event : uniqueEvents) {
             System.out.println("ln38");
             int frequency = freqOfFormLabels.get(event);
             System.out.println("event: " + event + " frequency: " + frequency);
-            int fare = Integer.parseInt(requestBody.get(event));
-            totalFare += frequency * fare;
+            BigDecimal fare = new BigDecimal(requestBody.get(event));
+            totalFare = totalFare.add(fare.multiply(BigDecimal.valueOf(frequency)));
         }
         return totalFare;
     }

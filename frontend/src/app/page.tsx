@@ -35,11 +35,11 @@ export default  function Home() {
     const formData = new FormData();
     const file = event.files[0];
     formData.append('file', file);
-
     toast('Uploading file.....', {
       icon: <Loader />,
     });
-      const responseMessage = await fetch('http://localhost:8080/api/v1/upload/local', {
+    // console.log(`Upload local route: ${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/upload/local`);
+      const responseMessage = await fetch( `${process.env.EXT_PUBLIC_SERVER_DOMAIN}/api/v1/upload/local`, {
         method: 'POST',
         body: formData
       })
