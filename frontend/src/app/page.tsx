@@ -1,14 +1,17 @@
 // @ts-nocheck 
 "use client"
 import { toast } from "sonner";
-import { useEffect, useRef, useState } from "react";
+import {useState } from "react";
 import "primereact/resources/themes/lara-light-indigo/theme.css"; 
 import "primereact/resources/primereact.min.css"; 
 import { FileUpload } from 'primereact/fileupload';
 import FareForm from "@/components/fareForm";
-import { log } from "console";
 import { Loader } from "lucide-react";
-import nextConfig from "../../next.config";
+import {
+  PageHeader,
+  PageHeaderDescription,
+  PageHeaderHeading,
+} from "@/components/ui/page-header"
 
 export default  function Home() {
   const [fileData, setFileData] = useState("default file data");
@@ -57,9 +60,17 @@ export default  function Home() {
     setFileUploadSuccess(responseMessage.ok);
   };
   return (
-    <>  
-        <div className="grid h-screen place-items-center">
-            {!formAppear && (<FileUpload 
+    <>    
+              <div className="grid place-items-center">
+            {!formAppear && (
+            <>
+            <PageHeader className="pb-8">
+            <PageHeaderHeading>fareCompare.</PageHeaderHeading>
+           <PageHeaderDescription>
+            Upload your calendar file to get started.
+           </PageHeaderDescription>
+           </PageHeader>
+            <FileUpload 
               mode = "basic"
               name="file" 
               customUpload = {true}
@@ -68,7 +79,8 @@ export default  function Home() {
               maxFileSize={1000000} 
               uploadHandler={handleFileUpload}
               onSelect={handleBeforeUpload}
-              />)}
+              />
+              </>)}
 
         </div>
   
