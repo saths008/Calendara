@@ -17,32 +17,13 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @SpringBootApplication
 public class BackendApplication {
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = "*")
 	@GetMapping("/health_check")
 	public ResponseEntity<String> home() {
 		return ResponseEntity.ok("Health Check Successful");
 	}
 
-	// @CrossOrigin(origins = "http://localhost:3000")
-	// @PostMapping("/analyse")
-	// public ResponseEntity<String> handleFileUpload(@RequestBody MultipartFile
-	// file) {
-	// // Process the file as needed
-	// if(file == null) {
-	// return ResponseEntity.status(HttpStatusCode.valueOf(400)).body("Invalid
-	// request");
-	// }
-	// if (!file.isEmpty()) {
-	// // File handling logic
-	// // e.g., save the file, read its content, etc.
-	// return ResponseEntity.ok("Request processed successfully");
-	// } else {
-	// return ResponseEntity.status(HttpStatusCode.valueOf(400)).body("Invalid
-	// request");
-	// }
-	// }
-
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = "https://fare-compare.vercel.app")
 	@PostMapping("/analyse")
 	public String handleFileUpload(@RequestBody MultipartFile file) {
 		// Logic to handle the file

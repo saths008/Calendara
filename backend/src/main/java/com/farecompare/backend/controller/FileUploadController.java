@@ -21,17 +21,9 @@ public class FileUploadController {
     @Autowired
     private FileUploadService fileUploadService;
 
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "https://fare-compare.vercel.app")
     @PostMapping("/upload/local")
     public ResponseEntity<Map<String, Object>> uploadLocal(@RequestParam("file") MultipartFile file) {
         return fileUploadService.uploadToLocal(file);
     }
-
-    // @CrossOrigin(origins = "http://localhost:3000")
-    // @PostMapping("/submitForm")
-    // public void submitForm(@RequestBody String requestBody) {
-    // // Process the request body here
-    // System.out.println("Received request body: " + requestBody);
-    // // Perform any necessary operations with the received data
-    // }
 }

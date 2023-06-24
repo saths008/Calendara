@@ -14,7 +14,7 @@ import java.util.Set;
 @RequestMapping("/api/v1")
 public class FormController {
 
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "https://fare-compare.vercel.app")
     @PostMapping("/submitForm")
     public HashMap<String, Object> submitForm(@RequestBody Map<String, String> requestBody) {
         HashMap<String, Object> response = new HashMap<>();
