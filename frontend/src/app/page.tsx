@@ -8,7 +8,7 @@ import { FileUpload } from 'primereact/fileupload';
 import FareForm from "@/components/fareForm";
 import { log } from "console";
 import { Loader } from "lucide-react";
-                 
+import nextConfig from "../../next.config";
 
 export default  function Home() {
   const [fileData, setFileData] = useState("default file data");
@@ -38,8 +38,8 @@ export default  function Home() {
     toast('Uploading file.....', {
       icon: <Loader />,
     });
-    // console.log(`Upload local route: ${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/upload/local`);
-      const responseMessage = await fetch( `${process.env.EXT_PUBLIC_SERVER_DOMAIN}/api/v1/upload/local`, {
+      console.log(`SERVER_DOMAIN: ${nextConfig.publicRuntimeConfig.NEXT_PUBLIC_SERVER_DOMAIN}`);
+      const responseMessage = await fetch( `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/api/v1/upload/local`, {
         method: 'POST',
         body: formData
       })

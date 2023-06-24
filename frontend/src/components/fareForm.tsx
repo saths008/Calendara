@@ -22,8 +22,7 @@ export default function FareForm({ response, fileData }: any) {
       toast('Uploading file.....', {
         icon: <Loader />,
       });
-      // console.log(`process.env.SERVER_URL: ${process.env.NEXT_PUBLIC_SERVER_URL}`);
-      const response = await fetch(`${process.env.EXT_PUBLIC_SERVER_DOMAIN}/api/v1/submitForm`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/api/v1/submitForm`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
