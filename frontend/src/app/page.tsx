@@ -48,19 +48,19 @@ export default  function Home() {
     const jsonResponse = await responseMessage.json();
     if (responseMessage.ok) {
       toast.success('File uploaded successfully');
+      setResponse(jsonResponse.eventDetails);
+      setFileData(jsonResponse.fileData);
     }
     else{
-      toast.error('File upload failed');
+      toast.error(jsonResponse.error);
     }
-    setResponse(jsonResponse.eventDetails);
-    setFileData(jsonResponse.fileData);
-    console.log(`response after setting: ${response}`);
     setFormAppear(responseMessage.ok);
     setFileUploadSuccess(responseMessage.ok);
   };
   return (
-    <>
-            <FileUpload 
+    <>  
+        <div className="grid h-screen place-items-center">
+            {!formAppear && (<FileUpload 
               mode = "basic"
               name="file" 
               customUpload = {true}
@@ -69,7 +69,9 @@ export default  function Home() {
               maxFileSize={1000000} 
               uploadHandler={handleFileUpload}
               onSelect={handleBeforeUpload}
-              />
+              />)}
+
+        </div>
   
       <div>
         {formAppear && (<FareForm response={response} fileData={fileData}/>)}
