@@ -1,12 +1,10 @@
 package com.farecompare.backend.controller;
 
 import com.farecompare.backend.CalendarParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,7 +12,7 @@ import java.util.Set;
 @RequestMapping("/api/v1")
 public class FormController {
 
-    @CrossOrigin(origins = "https://fare-compare.vercel.app")
+    @CrossOrigin(origins = { "https://fare-compare.vercel.app", "http://localhost:3000" })
     @PostMapping("/submitForm")
     public HashMap<String, Object> submitForm(@RequestBody Map<String, String> requestBody) {
         HashMap<String, Object> response = new HashMap<>();

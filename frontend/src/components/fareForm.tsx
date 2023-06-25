@@ -42,7 +42,7 @@ export default function FareForm({ response, fileData }: any) {
         console.error("Form submission failed");
       }
     } catch (error) {
-      console.error("An error occurred:", error);
+      toast.error("Something went wrong. Please try again later");
     }
   }
 
