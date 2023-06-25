@@ -108,9 +108,12 @@
                 </>)}
 
           </div>
-    
+
         <div>
-          {formAppear && (<FareForm response={response} fileData={fileData}/>)}
+          {formAppear && response.length == 0  && (<p>Your selected date range had 0 events to be analysed.</p>)}
+        </div>
+        <div>
+          {formAppear && response.length >0 && (<FareForm response={response} fileData={fileData} startDate={startDate} endDate={endDate}/>)}
         </div>
       </>
     )

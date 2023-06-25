@@ -24,6 +24,6 @@ public class FileUploadController {
     @PostMapping("/upload/local")
     public ResponseEntity<Map<String, Object>> uploadLocal(@RequestParam("file") MultipartFile file,
             @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
-        return fileUploadService.uploadToLocal(file);
+        return fileUploadService.uploadToLocal(file, startDate, endDate);
     }
 }

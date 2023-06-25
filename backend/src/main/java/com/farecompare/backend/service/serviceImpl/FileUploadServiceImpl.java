@@ -12,8 +12,9 @@ import com.farecompare.backend.service.FileUploadService;
 
 @Service
 public class FileUploadServiceImpl implements FileUploadService {
+
     @Override
-    public ResponseEntity<Map<String, Object>> uploadToLocal(MultipartFile file) {
+    public ResponseEntity<Map<String, Object>> uploadToLocal(MultipartFile file, String startDate, String endDate) {
         Map<String, Object> payload = new HashMap<>();
         try {
             System.out.println("Original filename: " + file.getOriginalFilename());
@@ -25,17 +26,18 @@ public class FileUploadServiceImpl implements FileUploadService {
                 throw new IllegalArgumentException("File extension must be .ics");
             }
 
-            System.out.println("fileExtension: " + fileExtension);
             byte[] data = file.getBytes();
             String calendarData = new String(data);
             calendarData = calendarData.replace("\n", "\\n");
-            CalendarParser calendarParser = new CalendarParser(calendarData);
+            CalendarParser calendarParser = new CalendarParser(calendarData, startDate, endDate);
 
             Collection<String> collection = calendarParser.generateFormLabels().get(1);
             Set<String> formLabels = new HashSet<>(collection);
             payload.put("message", "Hello World");
             payload.put("eventDetails", formLabels);
             payload.put("fileData", calendarData);
+            payload.put("startDate", startDate);
+            payload.put("endDate", endDate);
 
             return ResponseEntity.ok(payload);
         } catch (IllegalArgumentException e) {

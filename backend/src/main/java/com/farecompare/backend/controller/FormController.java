@@ -1,9 +1,13 @@
 package com.farecompare.backend.controller;
 
 import com.farecompare.backend.CalendarParser;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -14,18 +18,29 @@ public class FormController {
 
     @CrossOrigin(origins = { "https://fare-compare.vercel.app", "http://localhost:3000" })
     @PostMapping("/submitForm")
-    public HashMap<String, Object> submitForm(@RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<Map<String, Object>> submitForm(@RequestBody Map<String, String> requestBody) {
         HashMap<String, Object> response = new HashMap<>();
         try {
-            CalendarParser calendarParser = new CalendarParser(requestBody.get("fileData"));
+            String startDate = requestBody.get("startDate");
+            String endDate = requestBody.get("endDate");
+            if (startDate == null || endDate == null) {
+                response.put("error", "startDate and endDate are required");
+                return ResponseEntity.badRequest().body(response);
+            }
+            CalendarParser calendarParser = new CalendarParser(requestBody.get("fileData"), startDate, endDate);
             requestBody.remove("fileData");
+            requestBody.remove("startDate");
+            requestBody.remove("endDate");
             System.out.println();
             System.out.println("requestBody: " + requestBody);
+            System.out.println("Problem is calculateFare()");
             response.put("fare", calculateFare(calendarParser, requestBody));
         } catch (Exception e) {
             System.out.println("Error: " + e);
+            response.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
         }
-        return response;
+        return ResponseEntity.ok(response);
     }
 
     public BigDecimal calculateFare(CalendarParser calendarParser, Map<String, String> requestBody) {

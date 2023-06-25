@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Loader } from "lucide-react";
 import { toast } from "sonner";
 
-export default function FareForm({ response, fileData }: any) {
+export default function FareForm({ response, fileData, startDate, endDate }: any) {
   const [fare, setFare] = useState(null);
 
   async function handleSubmit(event: any) {
@@ -16,6 +16,8 @@ export default function FareForm({ response, fileData }: any) {
     const formData = new FormData(event.target);
     const data = Object.fromEntries(Array.from(formData));
     data.fileData = fileData;
+    data.startDate = startDate;
+    data.endDate = endDate;
     console.log(`data: ${JSON.stringify(data)}`);
     try {
 
