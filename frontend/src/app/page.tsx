@@ -101,8 +101,8 @@
                 <WelcomeMessage/>
                 <form onSubmit={handleFileUpload}>
                   <input type="file" name="fileInput" accept=".ics" required/>
-                  <DatePickerDemo date={startDate} setDate={setStartDate}/>
-                  <DatePickerDemo date={endDate} setDate={setEndDate}/>
+                  <DatePicker date={startDate} setDate={setStartDate}/>
+                  <DatePicker date={endDate} setDate={setEndDate}/>
                   <button type="submit">Submit</button>
                 </form>
                 </>)}
@@ -119,7 +119,7 @@
     )
   }
 
-  export function DatePickerDemo({date, setDate} ) {
+  function DatePicker({date, setDate} ) {
   
     return (
       <Popover>
