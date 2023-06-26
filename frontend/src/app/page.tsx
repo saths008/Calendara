@@ -23,15 +23,6 @@ function WelcomeMessage() {
         >
           Get Started
         </Link>
-        <Link
-          target="_blank"
-          rel="noreferrer"
-          href={siteConfig.links.personal_github}
-          className={cn(buttonVariants({ variant: "outline" }))}
-        >
-          <Icons.gitHub className="mr-2 h-4 w-4" />
-          GitHub
-        </Link>
       </div>
     </PageHeader>
   );
