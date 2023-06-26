@@ -18,7 +18,6 @@ import {
 
 export default function AnalyseCalendarPage() {
   const [fileData, setFileData] = useState("default file data");
-  const [date, setDate] = useState<Date | undefined>(new Date());
   const [startDate, setStartDate] = useState<Date | undefined>(new Date());
   const [endDate, setEndDate] = useState<Date | undefined>(new Date());
   // @ts-ignore
@@ -27,31 +26,12 @@ export default function AnalyseCalendarPage() {
     null
   );
   const [formAppear, setFormAppear] = useState(false);
-  const [fileUploadSuccess, setFileUploadSuccess] = useState<boolean>(false);
-  const handleBeforeUpload = (event: any) => {
-    console.log("here");
-    const file = event.files[0];
-    // console.log(`event: ${JSON.stringify(event)}`)
-    if (file.type !== "text/calendar" && !file.name.endsWith(".ics")) {
-      // Invalid file type
-
-      console.log("Invalid file type. Only .ics files are allowed.");
-      setincorrectFileType(
-        `Invalid file type. Only .ics files are allowed. You uploaded a ${file.type}`
-      );
-      alert(
-        `Invalid file type. Only .ics files are allowed. You uploaded a ${file.type}`
-      );
-      return;
-    }
-  };
 
   const handleFileUpload = async (event: any) => {
     event.preventDefault();
-    // console.log(`startDate: ${startDate}`);
-    // console.log(`endDate: ${endDate}`);
+
     const formData = new FormData(event.target);
-    // console.log(`formData: ${JSON.stringify(formData)}`);
+
     const file = event.target.elements.fileInput.files[0];
     formData.append("file", file);
     formData.append("startDate", startDate.toISOString());
@@ -78,7 +58,6 @@ export default function AnalyseCalendarPage() {
         toast.error(jsonResponse.error);
       }
       setFormAppear(responseMessage.ok);
-      setFileUploadSuccess(responseMessage.ok);
     } catch (error) {
       toast.error("Something went wrong. Please try again later");
     }
@@ -101,7 +80,7 @@ export default function AnalyseCalendarPage() {
 
       <div>
         {formAppear && response.length == 0 && (
-          <p>Your selected date range had 0 events to be analysed.</p>
+          <b>Your selected date range had 0 events to be analysed.</b>
         )}
       </div>
       <div>

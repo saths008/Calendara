@@ -60,7 +60,7 @@ export default function MobileNavBar() {
             </ScrollArea>
           </SheetContent>
         </Sheet>
-        <div className="ml-auto">
+        <div>
           <HoverCardForGitHub
             showIcon={true}
             linkTo={siteConfig.links.fareCompare_github}

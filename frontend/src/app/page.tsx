@@ -1,4 +1,5 @@
 import { Icons } from "@/components/icons";
+import React from "react";
 import { buttonVariants } from "@/components/ui/button";
 import {
   PageHeader,
@@ -7,9 +8,7 @@ import {
 } from "@/components/ui/page-header";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-
 function WelcomeMessage() {
   return (
     <PageHeader className="pb-8">
