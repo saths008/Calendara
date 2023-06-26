@@ -1,12 +1,13 @@
-import './globals.css'
-import { Inter } from 'next/font/google'
-import type { Metadata } from "next"
-import {Toaster} from '@/components/ui/toasterSonner'
-import { SiteFooter } from '@/components/siteFooter'
-const inter = Inter({ subsets: ['latin'] })
+import "./globals.css";
+import { Inter } from "next/font/google";
+import type { Metadata } from "next";
+import { Toaster } from "@/components/ui/toasterSonner";
+import { SiteFooter } from "@/components/siteFooter";
+import NavBar from "@/components/navbar/navbar";
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title:"fareCompare",
+  title: "fareCompare",
   description: "Transport Fare Calculator based on your calendar",
   keywords: [
     "Next.js",
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
     "Fare",
     "Calculator",
     "Transport Fare Calculator",
-    ".ics"
+    ".ics",
   ],
   authors: [
     {
@@ -32,27 +33,26 @@ export const metadata: Metadata = {
     shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
   },
-}
-
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   if (process.env.NEXT_PUBLIC_SERVER_DOMAIN == undefined) {
     throw new Error(
       "NEXT_PUBLIC_SERVER_DOMAIN is undefined. Please add it to your .env.local"
-    )
+    );
   }
   return (
     <html lang="en">
-  
-      <body className={inter.className}>        
+      <body className={inter.className}>
+        <NavBar />
         {children}
         <Toaster />
-        <SiteFooter/>
+        <SiteFooter />
       </body>
     </html>
-  )
+  );
 }

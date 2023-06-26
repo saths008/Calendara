@@ -43,7 +43,7 @@ export function HoverCardForGitHub({
               />
             </Button>
           ) : (
-            <>{displayName}</>
+            <text>{displayName}</text>
           )}
         </Link>
       </HoverCardTrigger>
