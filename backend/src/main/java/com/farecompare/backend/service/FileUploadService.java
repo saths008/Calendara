@@ -7,5 +7,5 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileUploadService {
 
-    public ResponseEntity<Map<String, Object>> uploadToLocal(MultipartFile file);
+    public ResponseEntity<Map<String, Object>> uploadToLocal(MultipartFile file, String startDate, String endDate);
 }

@@ -2,6 +2,7 @@ package com.farecompare.backend;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,17 +12,17 @@ import java.util.regex.Pattern;
 public class CalendarParser {
     private String calendarData;
     private List<String> listOfCalendarData;
-    private List<String> cleanedListOfCalendarData;
     private static final String EVENT_BEGIN = "BEGIN:VEVENT";
     private static final String EVENT_END = "END:VEVENT";
 
-    public CalendarParser(String calendarData) {
+    public CalendarParser(String calendarData, String startDate, String endDate) {
         this.calendarData = calendarData;
         listOfCalendarData = getEvents(calendarData);
-        cleanedListOfCalendarData = new ArrayList<>();
-        for (String event : listOfCalendarData) {
-            cleanedListOfCalendarData.add(cleanEvent(event));
-        }
+        System.out.println("listOfCalendarData: " + listOfCalendarData);
+        this.listOfCalendarData = filterOutEvents(listOfCalendarData,
+                convertDate(startDate), convertDate(endDate));
+        System.out.println("filterOutEvents: " + listOfCalendarData);
+
     }
 
     /**
@@ -49,6 +50,16 @@ public class CalendarParser {
     }
 
     /**
+     * @param date a date in the format yyyyMMdd'T'HHmmss'Z'
+     * @return a LocalDate object representing the date of the event
+     */
+    public LocalDate getLocalDate(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        return localDate;
+    }
+
+    /**
      * Returns a List of Strings containing all VEvents in the calendar
      * 
      * @return a List of Strings containing all VEvents in the calendar
@@ -65,6 +76,47 @@ public class CalendarParser {
             fileContents = fileContents.substring(endIndex);
         }
         return events;
+    }
+
+    /**
+     * @param allEvents a list of all events in the calendar
+     * @param startDate the start date of the range of dates to filter out
+     * @param endDate   the end date of the range of dates to filter out
+     * @return a list of events that occur between the start and end date
+     */
+    public List<String> filterOutEvents(List<String> allEvents, String startDate, String endDate) {
+        LocalDate localStartDate = getLocalDate(startDate);
+        LocalDate localEndDate = getLocalDate(endDate);
+        System.out.println("allEvents: " + allEvents);
+        System.out.println("allEvents.size(): " + allEvents.size());
+        int counter = 1;
+        List<String> filteredEvents = new ArrayList<>();
+        for (String event : allEvents) {
+            System.out.println("Filter counter: " + counter);
+            LocalDate dateOfEvent = getDate(event);
+            System.out.println("dateOfEvent: " + dateOfEvent);
+            System.out.println("localStartDate: " + localStartDate);
+            System.out.println("localEndDate: " + localEndDate);
+
+            if (!(dateOfEvent.isBefore(localStartDate) || dateOfEvent.isAfter(localEndDate))) {
+                filteredEvents.add(event);
+            }
+            counter++;
+        }
+        return filteredEvents;
+    }
+
+    /**
+     * Returns a LocalDate for the date of the event
+     * 
+     * @param event an event in String format
+     * @return a LocalDate object representing the date of the event
+     */
+    public LocalDate getDate(String event) {
+        String dStartTag = getDStart(event);
+        String dTSTARTtimeStamp = spliceDTSTART(dStartTag);
+        // String date = getDateFromZulu(dTSTARTtimeStamp);
+        return getLocalDate(dTSTARTtimeStamp);
     }
 
     public List<String> getListOfCalendarData() {
@@ -152,6 +204,22 @@ public class CalendarParser {
     }
 
     /**
+     * 2023-06-25T14:25:43.597Z -> 20230625T142543Z
+     * 
+     * @param date a date in the format yyyyMMdd'T'HHmmss'Z'
+     * @return a date in the format yyyyMMddHHmmssZ
+     */
+    public String convertDate(String date) {
+        date = date.replace(":", "");
+        date = date.replace("-", "");
+        int indexOfFullStop = date.lastIndexOf(".");
+        String firstPart = date.substring(0, indexOfFullStop);
+        String lastPart = date.substring(date.length() - 1, date.length());
+        date = firstPart + lastPart;
+        return date;
+    }
+
+    /**
      * @return string just containing the time, DTEND should be spliced off the
      *         original string
      */
@@ -171,10 +239,6 @@ public class CalendarParser {
             // String date = zuluTime.substring(0, 8);
             // String dateFormat = zuluTime.substring(0,3) + "-" + zuluTime.substring(4,5) +
             // "-" + zuluTime.substring(6,7);
-            final int beginningOfISO = 0;
-            final int startOfMonth = 0;
-            final int startOfDayOfMonth = 0;
-            final int endOfDayOfMonth = 0;
             int year = Integer.parseInt(zuluTime.substring(0, 4)); // 2023
             int month = Integer.parseInt(zuluTime.substring(4, 6));// 01
             int dayOfMonth = Integer.parseInt(zuluTime.substring(6, 8));// 20
@@ -186,7 +250,7 @@ public class CalendarParser {
         }
     }
 
-    public String getDate(String zuluTime) throws IllegalArgumentException {
+    public String getDateFromZulu(String zuluTime) throws IllegalArgumentException {
 
         if (zuluTime.length() == 16 && zuluTime.contains("T") && zuluTime.contains("Z")) {
             int year = Integer.parseInt(zuluTime.substring(0, 4)); // 2023
@@ -342,7 +406,7 @@ public class CalendarParser {
         for (String event : this.listOfCalendarData) {
             String dStartTag = getDStart(event);
             String timeStamp = spliceDTSTART(dStartTag);
-            allDates.add(getDate(timeStamp));
+            allDates.add(getDateFromZulu(timeStamp));
         }
         return allDates;
     }
@@ -362,7 +426,7 @@ public class CalendarParser {
                 String event = this.listOfCalendarData.get(i);
                 String dStartTag = getDStart(event);
                 String timeStamp = spliceDTSTART(dStartTag);
-                if (getDate(timeStamp).equals(date)) {
+                if (getDateFromZulu(timeStamp).equals(date)) {
                     indicesOfEvents.add(i);
                 }
             }
@@ -434,28 +498,5 @@ public class CalendarParser {
             }
         }
         return freqOfUniqueLabels;
-    }
-
-    /**
-     * Clean the event by removing any event specific details such as date, UID
-     * 
-     * @param event
-     * @return
-     */
-    public String cleanEvent(String event) {
-        String DTEND_REGEX = "DTEND:[^\\r\\n]+";
-        String DTSTAMP_REGEX = "DTSTAMP:[^\\r\\n]+";
-        String DTSTART_REGEX = "DTSTART:[^\\r\\n]+";
-        String LASTMODIFIED_REGEX = "LAST-MODIFIED:[^\\r\\n]+";
-        String UID_REGEX = "UID:[^\\r\\n]+";
-        String DATE_REGEX = "Date:[^\\r\\n]+";
-        String strippedString = event.replaceAll(DTEND_REGEX, "");
-        strippedString = strippedString.replaceAll(DTSTAMP_REGEX, "");
-        strippedString = strippedString.replaceAll(DTSTART_REGEX, "");
-        strippedString = strippedString.replaceAll(LASTMODIFIED_REGEX, "");
-        strippedString = strippedString.replaceAll(UID_REGEX, "");
-        strippedString = strippedString.replaceAll(DATE_REGEX, "");
-        System.out.println(strippedString);
-        return strippedString;
     }
 }
