@@ -2,6 +2,9 @@ import { siteConfig } from "@/config/site";
 import { HoverCardForGitHub } from "./HoverCardForGitHub";
 
 export function SiteFooter() {
+  const projectName = siteConfig.project_name;
+  const projectAndUserName = `@${siteConfig.username}/${projectName}`;
+  const descriptionForHoverCard = `${projectName} GitHub Repository`;
   return (
     <footer className="bg-gray-200 rounded-lg shadow m-4 dark:bg-gray-800">
       <span className="text-sm text-gray-500">
@@ -18,10 +21,10 @@ export function SiteFooter() {
             . The source code is available on{" "}
             <HoverCardForGitHub
               showIcon={false}
-              linkTo={siteConfig.links.fareCompare_github}
+              linkTo={siteConfig.links.project_github}
               displayName="GitHub"
-              summary="@saths008/fare-compare"
-              description="fareCompare GitHub Repository"
+              summary={projectAndUserName}
+              description={descriptionForHoverCard}
             />
             .
           </p>

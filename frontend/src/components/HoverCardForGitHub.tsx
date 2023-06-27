@@ -7,6 +7,7 @@ import { Icons } from "@/components/icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { siteConfig } from "@/config/site";
 
 interface HoverCardForGitHubProps {
   showIcon: boolean;
@@ -60,5 +61,18 @@ export function HoverCardForGitHub({
         </div>
       </HoverCardContent>
     </HoverCard>
+  );
+}
+export function GitHubHoverCardWithLogo() {
+  const projectName = siteConfig.project_name;
+  const projectAndUserName = `@${siteConfig.username}/${projectName}`;
+  const descriptionForHoverCard = `${projectName} GitHub Repository`;
+  return (
+    <HoverCardForGitHub
+      showIcon={true}
+      linkTo={siteConfig.links.project_github}
+      summary={projectAndUserName}
+      description={descriptionForHoverCard}
+    />
   );
 }

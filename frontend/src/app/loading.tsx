@@ -1,6 +1,5 @@
-"use client";
-import LoadingProgressBar from "@/components/progress_bar";
+import LoadingPage from "@/components/loadingIcon";
 
 export default function Loading() {
-  return <LoadingProgressBar />;
+  return <LoadingPage />;
 }

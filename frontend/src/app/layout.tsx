@@ -7,7 +7,7 @@ import NavBar from "@/components/navbar/navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "fareCompare",
+  title: "Calendara",
   description: "Transport Fare Calculator based on your calendar",
   keywords: [
     "Next.js",

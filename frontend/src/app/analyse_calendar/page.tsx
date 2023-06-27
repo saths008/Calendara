@@ -2,7 +2,7 @@
 "use client";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
-
+import CircularIndeterminate from "@/components/loadingIcon";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -37,7 +37,7 @@ export default function AnalyseCalendarPage() {
     formData.append("startDate", startDate.toISOString());
     formData.append("endDate", endDate.toISOString());
     toast("Uploading file.....", {
-      icon: <Loader />,
+      icon: <Loader className="animate-spin" />,
     });
 
     try {

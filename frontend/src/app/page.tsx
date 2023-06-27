@@ -1,3 +1,4 @@
+"use client";
 import { Icons } from "@/components/icons";
 import React from "react";
 import { buttonVariants } from "@/components/ui/button";
@@ -9,10 +10,12 @@ import {
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { Loader } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 function WelcomeMessage() {
   return (
     <PageHeader className="pb-8">
-      <PageHeaderHeading>fareCompare.</PageHeaderHeading>
+      <PageHeaderHeading>{siteConfig.project_name}.</PageHeaderHeading>
       <PageHeaderDescription>
         Analyse your calendar to calculate travel costs.
       </PageHeaderDescription>

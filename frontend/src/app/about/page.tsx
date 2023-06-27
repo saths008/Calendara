@@ -9,11 +9,11 @@ function AboutContents() {
     <PageHeader className="pb-8">
       <PageHeaderHeading>About</PageHeaderHeading>
       <PageHeaderDescription>
-        fareCompare allows you to upload your calendar. It will return a form
-        for you to fill out to gather travel fares then will output a total
-        fare. Other features such as event frequency are in the making too.
+        Calendara allows you to upload your calendar. It will return a form for
+        you to fill out to gather travel fares then will output a total fare.
+        Other features such as event frequency are in the making too.
       </PageHeaderDescription>
-      fareCompare doesn&#39;t store your calendar data. It is only used to
+      Calendara doesn&#39;t store your calendar data. It is only used to
       calculate your travel fare.
     </PageHeader>
   );

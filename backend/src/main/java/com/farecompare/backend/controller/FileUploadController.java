@@ -20,7 +20,7 @@ public class FileUploadController {
     @Autowired
     private FileUploadService fileUploadService;
 
-    @CrossOrigin(origins = { "https://fare-compare.vercel.app", "http://localhost:3000" })
+    @CrossOrigin(origins = { "https://calendara.vercel.app/", "http://localhost:3000" })
     @PostMapping("/upload/local")
     public ResponseEntity<Map<String, Object>> uploadLocal(@RequestParam("file") MultipartFile file,
             @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {

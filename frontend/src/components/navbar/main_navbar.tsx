@@ -13,7 +13,10 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { HoverCardForGitHub } from "@/components/HoverCardForGitHub";
+import {
+  GitHubHoverCardWithLogo,
+  HoverCardForGitHub,
+} from "@/components/HoverCardForGitHub";
 import { Icons } from "../icons";
 import { siteConfig } from "@/config/site";
 import ProfileAvatar from "../profile_avatar";
@@ -85,12 +88,7 @@ export function DesktopNavBar() {
           </NavigationMenu>
         </div>
         <div className="ml-auto pr-2">
-          <HoverCardForGitHub
-            showIcon={true}
-            linkTo={siteConfig.links.fareCompare_github}
-            summary="@saths008/fareCompare"
-            description="fareCompare GitHub Repository"
-          />
+          <GitHubHoverCardWithLogo />
         </div>
       </header>
     </div>

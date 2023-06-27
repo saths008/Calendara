@@ -12,7 +12,10 @@ import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronsRightLeft } from "lucide-react";
 import ProfileAvatar from "../profile_avatar";
-import { HoverCardForGitHub } from "../HoverCardForGitHub";
+import {
+  GitHubHoverCardWithLogo,
+  HoverCardForGitHub,
+} from "../HoverCardForGitHub";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
@@ -38,6 +41,7 @@ export function AccordionNavContent() {
 }
 export default function MobileNavBar() {
   const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="lg:hidden">
       <nav className="flex items-center justify-between px-4 py-2">
@@ -61,12 +65,7 @@ export default function MobileNavBar() {
           </SheetContent>
         </Sheet>
         <div>
-          <HoverCardForGitHub
-            showIcon={true}
-            linkTo={siteConfig.links.fareCompare_github}
-            summary="@saths008/fareCompare"
-            description="fareCompare GitHub Repository"
-          />
+          <GitHubHoverCardWithLogo />
         </div>
       </nav>
     </div>
