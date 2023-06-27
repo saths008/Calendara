@@ -2,7 +2,6 @@
 "use client";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
-import CircularIndeterminate from "@/components/loadingIcon";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -26,38 +25,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
-export function CardWithForm({ handleFileUpload, startDate, endDate }) {
-  return (
-    <Card className="w-[350px]">
-      <CardHeader>
-        <CardTitle>Journey</CardTitle>
-        <CardDescription>Fill in your travel fare.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleFileUpload}>
-          <input type="file" name="fileInput" accept=".ics" required />
-          <DatePicker date={startDate} setDate={setStartDate} />
-          <DatePicker date={endDate} setDate={setEndDate} />
-          <button type="submit">Submit</button>
-        </form>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
-        <Button>Deploy</Button>
-      </CardFooter>
-    </Card>
-  );
-}
-
 export default function AnalyseCalendarPage() {
   const [fileData, setFileData] = useState("default file data");
   const [startDate, setStartDate] = useState<Date | undefined>(new Date());
   const [endDate, setEndDate] = useState<Date | undefined>(new Date());
   // @ts-ignore
   const [response, setResponse] = useState<Array<String>>(null);
-  const [incorrectFileType, setincorrectFileType] = useState<String | null>(
-    null
-  );
+
   const [formAppear, setFormAppear] = useState(false);
 
   const handleFileUpload = async (event: any) => {
