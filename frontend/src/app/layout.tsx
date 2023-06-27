@@ -51,10 +51,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NavBar />
-        {children}
-        <Toaster />
-        <SiteFooter />
+        <div className="">
+          <NavBar />
+          {children}
+          <Toaster />
+          <SiteFooter />
+        </div>
       </body>
     </html>
   );

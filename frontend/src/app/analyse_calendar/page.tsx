@@ -112,14 +112,13 @@ export default function AnalyseCalendarPage() {
             </Card>
           </>
         )}
-      </div>
 
-      <div>
-        {formAppear && response.length == 0 && (
-          <b>Your selected date range had 0 events to be analysed.</b>
-        )}
-      </div>
-      <div>
+        <div>
+          {formAppear && response.length == 0 && (
+            <b>Your selected date range had 0 events to be analysed.</b>
+          )}
+        </div>
+
         {formAppear && response.length > 0 && (
           <FareForm
             response={response}
