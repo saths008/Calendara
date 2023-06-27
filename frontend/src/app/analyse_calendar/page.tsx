@@ -15,6 +15,39 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import * as React from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+
+export function CardWithForm({ handleFileUpload, startDate, endDate }) {
+  return (
+    <Card className="w-[350px]">
+      <CardHeader>
+        <CardTitle>Journey</CardTitle>
+        <CardDescription>Fill in your travel fare.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleFileUpload}>
+          <input type="file" name="fileInput" accept=".ics" required />
+          <DatePicker date={startDate} setDate={setStartDate} />
+          <DatePicker date={endDate} setDate={setEndDate} />
+          <button type="submit">Submit</button>
+        </form>
+      </CardContent>
+      <CardFooter className="flex justify-between">
+        <Button variant="outline">Cancel</Button>
+        <Button>Deploy</Button>
+      </CardFooter>
+    </Card>
+  );
+}
 
 export default function AnalyseCalendarPage() {
   const [fileData, setFileData] = useState("default file data");
@@ -68,12 +101,41 @@ export default function AnalyseCalendarPage() {
       <div className="grid place-items-center min-h-screen">
         {!formAppear && (
           <>
-            <form onSubmit={handleFileUpload}>
-              <input type="file" name="fileInput" accept=".ics" required />
-              <DatePicker date={startDate} setDate={setStartDate} />
-              <DatePicker date={endDate} setDate={setEndDate} />
-              <button type="submit">Submit</button>
-            </form>
+            <Card className="w-[350px]">
+              <CardHeader>
+                <CardTitle>Upload your Calendar</CardTitle>
+                <CardDescription>
+                  Upload your .ics file with the date range you want to analyse.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleFileUpload}>
+                  <div className="pb-12">
+                    <Input
+                      type="file"
+                      name="fileInput"
+                      accept=".ics"
+                      required
+                    />
+                  </div>
+                  <div className="pb-12">
+                    <DatePicker date={startDate} setDate={setStartDate} />
+                  </div>
+                  <div className="pb-12">
+                    <DatePicker
+                      date={endDate}
+                      setDate={setEndDate}
+                      className="pb-4"
+                    />
+                  </div>
+                  <CardFooter className="flex justify-between pt-5">
+                    <Button type="submit" variant="outline">
+                      Submit
+                    </Button>
+                  </CardFooter>
+                </form>
+              </CardContent>
+            </Card>
           </>
         )}
       </div>

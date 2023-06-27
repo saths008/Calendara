@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "Calendara",
   description: "Transport Fare Calculator based on your calendar",
   keywords: [
+    "Calendara",
+    "Upload",
+    "File",
     "Next.js",
     "React",
     "Tailwind CSS",
