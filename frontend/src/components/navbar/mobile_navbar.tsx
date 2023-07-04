@@ -4,20 +4,14 @@ import {
   Accordion,
   AccordionNoTrigger,
   AccordionItem,
-  AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronsRightLeft } from "lucide-react";
 import ProfileAvatar from "../profile_avatar";
-import {
-  GitHubHoverCardWithLogo,
-  HoverCardForGitHub,
-} from "../HoverCardForGitHub";
-import { siteConfig } from "@/config/site";
-import { cn } from "@/lib/utils";
+import { GitHubHoverCardWithLogo } from "../HoverCardForGitHub";
 
 export function AccordionNavContent() {
   return (
