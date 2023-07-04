@@ -1,5 +1,4 @@
 "use client";
-import { Icons } from "@/components/icons";
 import React from "react";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -10,8 +9,6 @@ import {
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { Loader } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
 function WelcomeMessage() {
   return (
     <PageHeader className="pb-8">
