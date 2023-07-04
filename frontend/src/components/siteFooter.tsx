@@ -13,10 +13,10 @@ export function SiteFooter() {
             Built by{" "}
             <HoverCardForGitHub
               showIcon={false}
-              linkTo={siteConfig.links.personal_github}
+              linkTo={siteConfig.links.personal_website}
               displayName="Saath Satheeshkumar"
-              summary="@saths008"
-              description="Saath Satheeshkumars&#39; GitHub Account"
+              summary="My Portfolio"
+              description="Saath Satheeshkumar's personal website"
             />
             . The source code is available on{" "}
             <HoverCardForGitHub

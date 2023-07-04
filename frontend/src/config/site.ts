@@ -6,6 +6,7 @@ export const siteConfig = {
   links: {
     personal_github: "https://github.com/saths008",
     project_github: "https://github.com/saths008/Calendara",
+    personal_website: "https://saathsatheesh.vercel.app/",
   },
 };
 
