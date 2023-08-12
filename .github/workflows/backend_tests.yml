@@ -2,13 +2,9 @@ name: Spring Test
 
 on:
   push:
-    branches:
-      - main
-      - Dev
+    branches: "**"
   pull_request:
-    branches:
-      - main
-      - Dev
+    branches: "**"
 
 jobs:
   build:
@@ -24,10 +20,6 @@ jobs:
           java-version: 17.0.6
           distribution: "temurin"
 
-      - name: Build with Maven
+      - name: Build and Run Tests with Maven
         working-directory: backend
         run: mvn clean install
-
-      - name: Run Tests
-        working-directory: backend
-        run: mvn test
