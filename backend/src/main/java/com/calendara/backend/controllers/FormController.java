@@ -1,13 +1,11 @@
-package com.farecompare.backend.controller;
+package com.calendara.backend.controllers;
 
-import com.farecompare.backend.CalendarParser;
+import com.calendara.backend.services.CalendarParser;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;

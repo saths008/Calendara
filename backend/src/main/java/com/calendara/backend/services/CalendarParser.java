@@ -1,4 +1,7 @@
-package com.farecompare.backend;
+package com.calendara.backend.services;
+
+import lombok.Getter;
+import lombok.extern.java.Log;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -7,24 +10,29 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/*@Component
-@ComponentScan*/
+@Getter
+@Log
 public class CalendarParser {
     private String calendarData;
+    //List of all events in the calendar
     private List<String> listOfCalendarData;
     private static final String EVENT_BEGIN = "BEGIN:VEVENT";
     private static final String EVENT_END = "END:VEVENT";
 
+    /**
+     * @param calendarData a String containing the contents of a .ics file
+     * @param startDate YYYY-MM-DDTHH:MM:SS.mmmZ start date of the range of dates to filter out
+     * @param endDate YYYY-MM-DDTHH:MM:SS.mmmZ end date of the range of dates to filter out
+     */
     public CalendarParser(String calendarData, String startDate, String endDate) {
+        calendarData = calendarData.replace("\n", "\\n");
         this.calendarData = calendarData;
         listOfCalendarData = getEvents(calendarData);
-        System.out.println("listOfCalendarData: " + listOfCalendarData);
+        log.info("listOfCalendarData: " + listOfCalendarData);
         this.listOfCalendarData = filterOutEvents(listOfCalendarData,
                 convertDate(startDate), convertDate(endDate));
-        System.out.println("filterOutEvents: " + listOfCalendarData);
 
     }
-
     /**
      * Finds the indices of the first EVENT_BEGIN and EVENT_END in a given String
      * 
@@ -45,18 +53,13 @@ public class CalendarParser {
         }
     }
 
-    public String getCalendarData() {
-        return calendarData;
-    }
-
     /**
      * @param date a date in the format yyyyMMdd'T'HHmmss'Z'
      * @return a LocalDate object representing the date of the event
      */
     public LocalDate getLocalDate(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'");
-        LocalDate localDate = LocalDate.parse(date, formatter);
-        return localDate;
+        return LocalDate.parse(date, formatter);
     }
 
     /**
@@ -119,10 +122,6 @@ public class CalendarParser {
         return getLocalDate(dTSTARTtimeStamp);
     }
 
-    public List<String> getListOfCalendarData() {
-        return this.listOfCalendarData;
-    }
-
     public int getNumberOfEvents() {
         return listOfCalendarData.size();
     }
@@ -137,8 +136,6 @@ public class CalendarParser {
      * @return string containing the location of the event
      */
     public String getLocation(String calendarData) {
-        // System.out.println("In getLocation of CalendarParser, input param: " +
-        // calendarData);
         String regexUppercaseLocation = "LOCATION:[A-Za-z0-9\\s]+";
         Pattern patternUpperCase = Pattern.compile(regexUppercaseLocation);
         Matcher matcherUpperCase = patternUpperCase.matcher(calendarData);
@@ -148,11 +145,9 @@ public class CalendarParser {
         Matcher matcherLowerCase = patternLowerCase.matcher(calendarData);
 
         if (matcherUpperCase.find()) {
-            String match = matcherUpperCase.group();
-            return match;
+            return matcherUpperCase.group();
         } else if (matcherLowerCase.find()) {
-            String match = matcherLowerCase.group();
-            return match;
+            return matcherLowerCase.group();
         } else {
             return "No Location found";
         }
@@ -169,8 +164,7 @@ public class CalendarParser {
         Matcher matcher = pattern.matcher(calendarData);
 
         if (matcher.find()) {
-            String match = matcher.group();
-            return match;
+            return matcher.group();
         } else {
             return "No DStart";
         }
@@ -187,8 +181,7 @@ public class CalendarParser {
         Matcher matcher = pattern.matcher(calendarData);
 
         if (matcher.find()) {
-            String match = matcher.group();
-            return match;
+            return matcher.group();
         } else {
             return "No DTEND";
         }
@@ -200,7 +193,7 @@ public class CalendarParser {
      */
     public String spliceDTSTART(String input) {
         // replace with DTSTART.length()
-        return input.substring(8, input.length());
+        return input.substring(8);
     }
 
     /**
@@ -210,12 +203,18 @@ public class CalendarParser {
      * @return a date in the format yyyyMMddHHmmssZ
      */
     public String convertDate(String date) {
-        date = date.replace(":", "");
-        date = date.replace("-", "");
-        int indexOfFullStop = date.lastIndexOf(".");
-        String firstPart = date.substring(0, indexOfFullStop);
-        String lastPart = date.substring(date.length() - 1, date.length());
-        date = firstPart + lastPart;
+        try {
+            date = date.replace(":", "");
+            date = date.replace("-", "");
+            int indexOfFullStop = date.lastIndexOf(".");
+            String firstPart = date.substring(0, indexOfFullStop);
+            String lastPart = date.substring(date.length() - 1, date.length());
+            date = firstPart + lastPart;
+        }
+
+            catch (Exception e) {
+                System.out.println("Error: " + e);
+            }
         return date;
     }
 
@@ -224,7 +223,7 @@ public class CalendarParser {
      *         original string
      */
     public String spliceDTEND(String input) {
-        return input.substring(6, input.length());
+        return input.substring(6);
     }
 
     /**
@@ -274,9 +273,8 @@ public class CalendarParser {
         if (zuluTime.length() == 16 && zuluTime.contains("T") && zuluTime.contains("Z")) {
             String hourTime = zuluTime.substring(9, 11);
             String minuteTime = zuluTime.substring(12, 14);
-            String time = hourTime + ":" + minuteTime;
             // System.out.println("The time of the event: " + time);
-            return time;
+            return hourTime + ":" + minuteTime;
         } else {
             throw new IllegalArgumentException("zuluTime not in ISO format");
         }
@@ -380,9 +378,8 @@ public class CalendarParser {
      */
     public HashMap<String, Integer> getFreqOfUniqueEvents() {
         HashMap<String, String> allEventDetails = getDetailsForAllEvents();
-        HashMap<String, Integer> freqOfEventDetails = getFreqOfEventDetails(getUniqueEventDetails(allEventDetails),
+        return getFreqOfEventDetails(getUniqueEventDetails(allEventDetails),
                 allEventDetails.values());
-        return freqOfEventDetails;
     }
 
     /**
@@ -392,9 +389,8 @@ public class CalendarParser {
      */
     public HashMap<String, Integer> getTotalFreqOfEventsOnDaysOfTheWeek() {
         HashMap<String, String> lessAccurateGetDetailsForAllEvents = lessAccurateGetDetailsForAllEvents();
-        HashMap<String, Integer> uniqueEventDetails = getFreqOfEventDetails(
+        return getFreqOfEventDetails(
                 getUniqueEventDetails(lessAccurateGetDetailsForAllEvents), lessAccurateGetDetailsForAllEvents.values());
-        return uniqueEventDetails;
     }
 
     /**
