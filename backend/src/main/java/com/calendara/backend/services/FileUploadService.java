@@ -1,4 +1,4 @@
-package com.farecompare.backend.service;
+package com.calendara.backend.services;
 
 import java.util.Map;
 

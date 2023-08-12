@@ -1,4 +1,4 @@
-package com.farecompare.backend;
+package com.calendara.backend;
 
 // import java.util.Map;
 // import java.util.HashMap;

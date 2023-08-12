@@ -1,4 +1,4 @@
-package com.farecompare.backend;
+package com.calendara.backend.services;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -15,16 +15,22 @@ public class CalendarParser {
     private static final String EVENT_BEGIN = "BEGIN:VEVENT";
     private static final String EVENT_END = "END:VEVENT";
 
+    /**
+     * @param calendarData a String containing the contents of a .ics file
+     * @param startDate YYYY-MM-DDTHH:MM:SS.mmmZ start date of the range of dates to filter out
+     * @param endDate YYYY-MM-DDTHH:MM:SS.mmmZ end date of the range of dates to filter out
+     */
     public CalendarParser(String calendarData, String startDate, String endDate) {
         this.calendarData = calendarData;
         listOfCalendarData = getEvents(calendarData);
         System.out.println("listOfCalendarData: " + listOfCalendarData);
+        System.out.println("startDate in CalendarParser: " + startDate);
+        System.out.println("endDate in CalendarParser: " + endDate);
         this.listOfCalendarData = filterOutEvents(listOfCalendarData,
                 convertDate(startDate), convertDate(endDate));
         System.out.println("filterOutEvents: " + listOfCalendarData);
 
     }
-
     /**
      * Finds the indices of the first EVENT_BEGIN and EVENT_END in a given String
      * 
@@ -210,12 +216,18 @@ public class CalendarParser {
      * @return a date in the format yyyyMMddHHmmssZ
      */
     public String convertDate(String date) {
-        date = date.replace(":", "");
-        date = date.replace("-", "");
-        int indexOfFullStop = date.lastIndexOf(".");
-        String firstPart = date.substring(0, indexOfFullStop);
-        String lastPart = date.substring(date.length() - 1, date.length());
-        date = firstPart + lastPart;
+        try {
+            date = date.replace(":", "");
+            date = date.replace("-", "");
+            int indexOfFullStop = date.lastIndexOf(".");
+            String firstPart = date.substring(0, indexOfFullStop);
+            String lastPart = date.substring(date.length() - 1, date.length());
+            date = firstPart + lastPart;
+        }
+
+            catch (Exception e) {
+                System.out.println("Error: " + e);
+            }
         return date;
     }
 

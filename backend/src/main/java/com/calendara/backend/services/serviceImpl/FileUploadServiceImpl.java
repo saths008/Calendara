@@ -1,14 +1,13 @@
-package com.farecompare.backend.service.serviceImpl;
+package com.calendara.backend.services.serviceImpl;
 
 import java.util.*;
 
-import com.farecompare.backend.CalendarParser;
+import com.calendara.backend.services.FileUploadService;
+import com.calendara.backend.services.CalendarParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.farecompare.backend.service.FileUploadService;
 
 @Service
 public class FileUploadServiceImpl implements FileUploadService {
@@ -25,7 +24,8 @@ public class FileUploadServiceImpl implements FileUploadService {
             if (!fileExtension.equals(".ics")) {
                 throw new IllegalArgumentException("File extension must be .ics");
             }
-
+            System.out.println("Start Date: " + startDate);
+            System.out.println("End Date: " + endDate);
             byte[] data = file.getBytes();
             String calendarData = new String(data);
             calendarData = calendarData.replace("\n", "\\n");
