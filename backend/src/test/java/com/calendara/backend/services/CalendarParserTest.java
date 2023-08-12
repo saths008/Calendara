@@ -1,4 +1,5 @@
 package com.calendara.backend.services;
+import lombok.extern.java.Log;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -8,10 +9,11 @@ import java.io.File;
 import java.io.FileReader;
 
 import static org.assertj.core.api.Assertions.assertThat;
+@Log
 @ExtendWith(MockitoExtension.class)
 public class CalendarParserTest {
 
-    private CalendarParser underTest;
+    private final CalendarParser underTest;
 
     public CalendarParserTest(){
         File file = new File("src/test/resources/test.ics");
@@ -24,7 +26,7 @@ public class CalendarParserTest {
             }
         }
         catch(Exception e) {
-            System.out.println("Error: " + e);
+            log.info("Error: " + e);
         }
         String calendarData = content.toString();
         underTest = new CalendarParser(calendarData, "2022-12-16T00:00:00.000Z","2023-01-20T00:00:00.000Z");
