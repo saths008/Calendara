@@ -27,11 +27,16 @@ public class CalendarParserTest {
             System.out.println("Error: " + e);
         }
         String calendarData = content.toString();
-        underTest = new CalendarParser(calendarData, "2022-12-16T13:25:18.538Z","2022-12-16T13:25:18.538Z");
+        underTest = new CalendarParser(calendarData, "2022-12-16T00:00:00.000Z","2023-01-20T00:00:00.000Z");
     }
 
     @Test
     public void testCalendarParserHello() {
         assertThat(underTest.sayHello()).isEqualTo("Hello, this is the Calendar Parser Class");
+    }
+
+    @Test
+    public void testNumberOfEvents(){
+        assertThat(underTest.getNumberOfEvents()).isEqualTo(2);
     }
 }
